@@ -71,6 +71,12 @@ public class KthLargestInArray {
     return newPivotIdx;
   }
 
+  static int partitionAroundPivotForTest(int left, int right, int pivotIdx,
+                                          List<Integer> A,
+                                          Comparator<Integer> cmp) {
+    return partitionAroundPivot(left, right, pivotIdx, A, cmp);
+  }
+
   public static void main(String[] args) {
     System.exit(
         GenericTest
