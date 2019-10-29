@@ -5,19 +5,21 @@ import epi.test_framework.GenericTest;
 
 import java.util.List;
 
-public class BstFromPreorder {
-  @EpiTest(testDataFile = "bst_from_preorder.tsv")
+/*
+14.5 Reconstruct a BST from Traversal Data
+ */
 
-  public static BstNode<Integer>
-  rebuildBSTFromPreorder(List<Integer> preorderSequence) {
+public class BstFromPreorder {
+
+  @EpiTest(testDataFile = "bst_from_preorder.tsv")
+  public static BstNode<Integer> rebuildBSTFromPreorder(List<Integer> preorderSequence) {
 
     return rebuildBSTFromPreorderHelper(preorderSequence, 0,
                                         preorderSequence.size());
   }
 
   // Builds a BST from preorderSequence.subList(start, end).
-  private static BstNode<Integer>
-  rebuildBSTFromPreorderHelper(List<Integer> preorderSequence, int start,
+  private static BstNode<Integer> rebuildBSTFromPreorderHelper(List<Integer> preorderSequence, int start,
                                int end) {
     if (start >= end) {
       return null;
