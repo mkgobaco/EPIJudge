@@ -2,6 +2,7 @@
 package epi.test_framework;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -131,5 +132,17 @@ public class TestUtils {
     double absEps = 1E-20;
     return Math.abs(d1 - d2) <=
         Math.max(eps * Math.max(Math.abs(d1), Math.abs(d2)), absEps);
+  }
+
+  public static String getTestDataFile(Class testClass) {
+    String testDataFile = null;
+    for (Method m : testClass.getMethods()) {
+      EpiTest annotation = m.getAnnotation(EpiTest.class);
+      if (annotation != null) {
+        testDataFile = annotation.testDataFile();
+        break;
+      }
+    }
+    return testDataFile;
   }
 }
