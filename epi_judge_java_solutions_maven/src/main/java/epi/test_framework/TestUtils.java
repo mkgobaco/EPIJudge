@@ -1,8 +1,11 @@
 
 package epi.test_framework;
 
+import epi.AbsentValueArray;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,6 +34,11 @@ public class TestUtils {
       result.add(List.of(line.split(FIELD_DELIM)));
     }
     return result;
+  }
+
+  public static List<List<String>> splitTsvFile(String tsvFileAsResource) throws URISyntaxException {
+    Path path = Paths.get(ClassLoader.getSystemResource(tsvFileAsResource).toURI());
+    return splitTsvFile(path);
   }
 
   public static String getDefaultTestDataDirPath() {
