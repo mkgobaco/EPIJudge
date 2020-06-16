@@ -2,20 +2,24 @@ package epi;
 
 import epi.test_framework.TestUtils;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class BstFromPreorderTest {
 
-    String testDataFile = null;
+    static String testDataFile = null;
+    static List<List<String>> testData = null;
 
-    @Before
-    public void setup()
-    {
+    @BeforeClass
+    public static void setup() throws URISyntaxException {
         testDataFile = TestUtils.getTestDataFile(BstFromPreorder.class);
+        testData = TestUtils.splitTsvFile(testDataFile);
     }
 
     @Test
