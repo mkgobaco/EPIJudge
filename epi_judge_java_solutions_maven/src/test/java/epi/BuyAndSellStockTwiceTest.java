@@ -1,7 +1,6 @@
 package epi;
 
 import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestOutput;
 import epi.test_framework.TestUtils;
 import epi.test_framework.TimedExecutor;
 import epi.test_framework.serialization_traits.SerializationTraits;
@@ -55,19 +54,18 @@ public class BuyAndSellStockTwiceTest {
                 func
                 , null, null)
                 ;
-        //genericTestHandler.parseSignature(testColumns);
         for (int ii = 1; ii < testData.size(); ii++) {
             List<String> testCase = testData.get(ii);
             testCase = testCase.subList(0, testCase.size()-1);
 
+            /*
             List<Object> parsed = TestUtils.getParsed(paramTraits, testCase, 1000L);
-            //List<Object> parsed = genericTestHandler.getParsed(testCase, 1000L);
-
             Double result = (Double) func.invoke(null, parsed.toArray());
+            */
+            Double result = (Double) TestUtils.runTest(func, testCase);
             Double expected = Double.valueOf(testCase.get(testCase.size()-1));
             assertEquals(expected, result, 0.000001);
             log.debug("{} {}", expected, result);
-            //TestOutput output = genericTestHandler.runTest(1000L, testCase);
 
         }
 

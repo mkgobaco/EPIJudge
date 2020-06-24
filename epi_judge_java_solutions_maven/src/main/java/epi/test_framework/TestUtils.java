@@ -3,10 +3,13 @@ package epi.test_framework;
 
 import epi.AbsentValueArray;
 import epi.test_framework.serialization_traits.SerializationTraits;
+import epi.test_framework.serialization_traits.TraitsFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TestUtils {
@@ -163,9 +167,26 @@ public class TestUtils {
 
   public static List<Object> getParsed(List<SerializationTraits> paramTraits, List<String> testArgs, Long timeoutSeconds) {
     List<Object> parsed = new ArrayList<>();
+
     for (int i = 0; i < paramTraits.size(); i++) {
       parsed.add(paramTraits.get(i).parse(testArgs.get(i)));
     }
     return parsed;
+  }
+
+  public static Object runTest(Method func,
+                               List<String> testArgs) throws InvocationTargetException, IllegalAccessException {
+    List<Type> paramTypes = List.of(func.getGenericParameterTypes());
+    List<SerializationTraits> paramTraits  = paramTypes.stream()
+            .map(TraitsFactory::getTraits)
+            .collect(Collectors.toList());
+
+    List<Object> parsed = new ArrayList<>();
+
+    for (int i = 0; i < paramTraits.size(); i++) {
+      parsed.add(paramTraits.get(i).parse(testArgs.get(i)));
+    }
+
+    return func.invoke(null, parsed.toArray());
   }
 }
