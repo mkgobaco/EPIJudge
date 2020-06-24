@@ -2,8 +2,10 @@
 package epi.test_framework;
 
 import epi.AbsentValueArray;
+import epi.test_framework.serialization_traits.SerializationTraits;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -156,5 +158,14 @@ public class TestUtils {
       }
     }
     return testDataFile;
+  }
+
+
+  public static List<Object> getParsed(List<SerializationTraits> paramTraits, List<String> testArgs, Long timeoutSeconds) {
+    List<Object> parsed = new ArrayList<>();
+    for (int i = 0; i < paramTraits.size(); i++) {
+      parsed.add(paramTraits.get(i).parse(testArgs.get(i)));
+    }
+    return parsed;
   }
 }
