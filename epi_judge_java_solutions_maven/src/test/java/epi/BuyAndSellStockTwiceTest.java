@@ -2,41 +2,31 @@ package epi;
 
 import epi.test_framework.GenericTestHandler;
 import epi.test_framework.TestUtils;
-import epi.test_framework.TimedExecutor;
-import epi.test_framework.serialization_traits.SerializationTraits;
-import epi.test_framework.serialization_traits.TraitsFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
 
 @Slf4j
-public class BuyAndSellStockTwiceTest {
+public class BuyAndSellStockTwiceTest extends BaseTest {
 
     static Class testClass = BuyAndSellStockTwice.class;
-    static String testDataFile = null;
-    static List<List<String>> testData = null;
-    static List<String> testColumns = null;
-    static Method func = null;
 
     @BeforeClass
-    public static void setup() throws URISyntaxException, NoSuchMethodException {
-        testDataFile = TestUtils.getTestDataFile(testClass);
-        testData = TestUtils.splitTsvFile(testDataFile);
-        testColumns = TestUtils.getColumns(testData);
-        func = BuyAndSellStockTwice.class.getDeclaredMethod("buyAndSellStockTwice", List.class);
+    public static void beforeClass() throws URISyntaxException, NoSuchMethodException {
+        setup(testClass);
     }
 
     @Test
     public void buyAndSellStockTwice() throws Exception {
+
+        Method func = testClass.getDeclaredMethod("buyAndSellStockTwice", List.class);
 
         for (int ii = 1; ii < testData.size(); ii++) {
             List<String> testCase = testData.get(ii);

@@ -164,6 +164,10 @@ public class TestUtils {
     return testDataFile;
   }
 
+  public static List<List<String>> getTestData(Class testClass) throws URISyntaxException {
+    String testDataFile = getTestDataFile(testClass);
+    return splitTsvFile(testDataFile);
+  }
 
   public static List<Object> getParsed(List<SerializationTraits> paramTraits, List<String> testArgs, Long timeoutSeconds) {
     List<Object> parsed = new ArrayList<>();
