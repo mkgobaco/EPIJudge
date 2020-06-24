@@ -126,6 +126,22 @@ public class GenericTestHandler {
     }
   }
 
+  public List<Object> getParsed(List<String> testArgs, Long timeoutSeconds) {
+    List<Object> parsed = new ArrayList<>();
+    for (int i = 0; i < paramTraits.size(); i++) {
+      parsed.add(paramTraits.get(i).parse(testArgs.get(i)));
+    }
+    List<Integer> metrics = calculateMetrics(parsed);
+
+    Object result;
+    TimedExecutor executor = new TimedExecutor(timeoutSeconds);
+
+    if (hasExecutorHook) {
+      parsed.add(0, executor);
+    }
+    return parsed;
+  }
+
   /**
    * This method is invoked for each row in a test data file (except the
    * header). It deserializes the list of arguments and calls the user method
