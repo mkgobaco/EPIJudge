@@ -4,7 +4,6 @@ import epi.test_framework.TestUtils;
 import epi.test_framework.serialization_traits.SerializationTraits;
 import epi.test_framework.serialization_traits.TraitsFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -22,7 +21,7 @@ public class BstFromPreorderTest extends BaseTest{
     static Class testClass = BstFromPreorder.class;
 
     @BeforeClass
-    public static void beforeClass() throws URISyntaxException, NoSuchMethodException {
+    public static void beforeClass() throws URISyntaxException {
         setup(testClass);
     }
 
@@ -40,7 +39,7 @@ public class BstFromPreorderTest extends BaseTest{
             List<String> testCase = testData.get(ii);
             testCase = testCase.subList(0, testCase.size()-1);
 
-            BstNode result = (BstNode) TestUtils.runTest(func, testCase);
+            BstNode result = (BstNode) TestUtils.runTest(func, testCase, timeoutSeconds);
             String expected = testCase.get(testCase.size()-1);
             SerializationTraits retValueTraits = TraitsFactory.getTraits(func.getGenericReturnType());
             assertEquals(retValueTraits.parse(expected), result);

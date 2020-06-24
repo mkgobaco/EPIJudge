@@ -10,9 +10,10 @@ import java.util.List;
 public class BaseTest {
 
     static List<List<String>> testData = null;
-    //static Class testClass = null;
+    static Long timeoutSeconds = 1000L;
 
-    public static void setup(Class testClass) throws URISyntaxException, NoSuchMethodException {
+    public static void setup(Class testClass) throws URISyntaxException {
         testData = TestUtils.getTestData(testClass);
+
     }
 }

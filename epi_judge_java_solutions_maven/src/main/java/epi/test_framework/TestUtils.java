@@ -1,12 +1,10 @@
 
 package epi.test_framework;
 
-import epi.AbsentValueArray;
 import epi.test_framework.serialization_traits.SerializationTraits;
 import epi.test_framework.serialization_traits.TraitsFactory;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -22,6 +20,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TestUtils {
+
+  private static Boolean hasExecutorHook = false;
+
   public static List<List<String>> splitTsvFile(Path tsvFile) {
     final String FIELD_DELIM = "\t";
 
@@ -179,15 +180,27 @@ public class TestUtils {
   }
 
   public static Object runTest(Method func,
-                               List<String> testArgs) throws InvocationTargetException, IllegalAccessException {
+                               List<String> testArgs, Long timeoutSeconds) throws InvocationTargetException, IllegalAccessException {
 
     List<Object> parsed = parseArgs(func, testArgs);
 
-    return func.invoke(null, parsed.toArray());
+    if (hasExecutorHook) {
+      parsed.add(0, new TimedExecutor(timeoutSeconds));
+      return func.invoke(null, parsed.toArray());
+    }
+    else
+      return func.invoke(null, parsed.toArray());
   }
 
   public static List<Object> parseArgs(Method func, List<String> args) {
     List<Type> paramTypes = List.of(func.getGenericParameterTypes());
+
+    if (paramTypes.size() >= 1 &&
+            paramTypes.get(0).equals(TimedExecutor.class)) {
+      hasExecutorHook = true;
+      paramTypes = paramTypes.subList(1, paramTypes.size());
+    }
+
     List<SerializationTraits> paramTraits  = paramTypes.stream()
             .map(TraitsFactory::getTraits)
             .collect(Collectors.toList());
