@@ -41,6 +41,10 @@ public class TestUtils {
     return splitTsvFile(path);
   }
 
+  public static List<String> getColumns(List<List<String>> testData) {
+    return testData.get(0);
+  }
+
   public static String getDefaultTestDataDirPath() {
     final int MAX_SEARCH_DEPTH = 4;
     final String DIR_NAME = "test_data";
