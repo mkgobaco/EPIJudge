@@ -27,3 +27,8 @@ epi_judge_java/java_build/
 
 # OS X specific files
 .DS_Store
+epi_judge_java_solutions_maven/target/
+epi_judge_java_solutions_maven/.settings/
+*.iml
+*.classpath
+*.project
