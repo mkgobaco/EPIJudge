@@ -176,6 +176,13 @@ public class TestUtils {
 
   public static Object runTest(Method func,
                                List<String> testArgs) throws InvocationTargetException, IllegalAccessException {
+
+    List<Object> parsed = parseArgs(func, testArgs);
+
+    return func.invoke(null, parsed.toArray());
+  }
+
+  public static List<Object> parseArgs(Method func, List<String> args) {
     List<Type> paramTypes = List.of(func.getGenericParameterTypes());
     List<SerializationTraits> paramTraits  = paramTypes.stream()
             .map(TraitsFactory::getTraits)
@@ -184,9 +191,9 @@ public class TestUtils {
     List<Object> parsed = new ArrayList<>();
 
     for (int i = 0; i < paramTraits.size(); i++) {
-      parsed.add(paramTraits.get(i).parse(testArgs.get(i)));
+      parsed.add(paramTraits.get(i).parse(args.get(i)));
     }
 
-    return func.invoke(null, parsed.toArray());
+    return parsed;
   }
 }
